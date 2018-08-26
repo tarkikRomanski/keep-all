@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Folder extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['folder_name', 'folder_description', 'color', 'parent_id'];
+    protected $fillable = ['folder_name', 'folder_description', 'color', 'parent_id', 'user_id'];
 
     /**
      * Relation with table `gists`
