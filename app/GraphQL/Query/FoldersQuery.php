@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Query;
 
+use App\GraphQL\Serializer\FolderSerializer;
 use App\Models\Folder;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
@@ -58,13 +59,7 @@ class FoldersQuery extends Query
         }
 
         return $query->get()->map(function (Folder $folder) {
-            return [
-                'id' => $folder->id,
-                'name' => $folder->folder_name,
-                'description' => $folder->folder_description,
-                'color' => $folder->color,
-                'parent' => $folder->parent_id
-            ];
+            return FolderSerializer::getInstance()->serialize($folder);
         });
     }
 }

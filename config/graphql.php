@@ -100,10 +100,12 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
-                'folders' => 'App\GraphQL\Query\FoldersQuery'
+                'folders' => 'App\GraphQL\Query\FoldersQuery',
             ],
             'mutation' => [
-                'createFolder' => 'App\GraphQL\Mutation\CreateFolderMutation'
+                'createFolder' => 'App\GraphQL\Mutation\Folder\CreateFolderMutation',
+                'updateFolder' => 'App\GraphQL\Mutation\Folder\UpdateFolderMutation',
+                'deleteFolder' => 'App\GraphQL\Mutation\Folder\DeleteFolderMutation',
             ]
         ]
     ],
