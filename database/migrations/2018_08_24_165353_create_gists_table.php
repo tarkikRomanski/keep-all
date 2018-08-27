@@ -15,12 +15,12 @@ class CreateGistsTable extends Migration
     {
         Schema::create('gists', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('gist_id', 20);
+            $table->string('gist_id', 32);
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->unsignedInteger('folder_id');
+            $table->unsignedInteger('folder_id')->nullable();
             $table->foreign('folder_id')
                 ->references('id')
                 ->on('folders');

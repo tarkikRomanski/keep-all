@@ -58,7 +58,7 @@ return [
     /*
      * Any middleware for the 'graphql' route group
      */
-    'middleware' => [],
+    'middleware' => ['api'],
 
     /**
      * Any middleware for a specific 'graphql' schema
@@ -101,11 +101,16 @@ return [
         'default' => [
             'query' => [
                 'folders' => 'App\GraphQL\Query\FoldersQuery',
+                'gists' => 'App\GraphQL\Query\GistsQuery',
             ],
             'mutation' => [
                 'createFolder' => 'App\GraphQL\Mutation\Folder\CreateFolderMutation',
                 'updateFolder' => 'App\GraphQL\Mutation\Folder\UpdateFolderMutation',
                 'deleteFolder' => 'App\GraphQL\Mutation\Folder\DeleteFolderMutation',
+
+                'createGist' => 'App\GraphQL\Mutation\Gist\CreateGistMutation',
+                'updateGist' => 'App\GraphQL\Mutation\Gist\UpdateGistMutation',
+                'deleteGist' => 'App\GraphQL\Mutation\Gist\DeleteGistMutation',
             ]
         ]
     ],
@@ -144,6 +149,7 @@ return [
 
     'types' => [
         'Folder' => 'App\GraphQL\Type\FolderType',
+        'Gist' => 'App\GraphQL\Type\GistType',
     ],
 
     /*
