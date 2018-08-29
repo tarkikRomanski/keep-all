@@ -13,7 +13,7 @@
                 </b-form-textarea>
             </b-form-group>
 
-            <b-card v-for="(file, index) in files" 
+            <b-card v-for="(file, index) in data.files" 
                 :key="`file-${index}`"
                 class="mb-2">
                 <div slot="header">
@@ -40,36 +40,53 @@
             </b-card>
 
             <b-button @click="addFile"><i class="fa fa-plus"></i> Add file</b-button>
+
+            <b-button variant="success" 
+                type="submit"
+                class="w-100 mt-3">
+            Create Gist
+            </b-button>
         </b-form>
     </div>
 </template>
 
 <script>
+import GistResource from "../../resources/gistResource";
+
 export default {
     data(){
         return {
             data: {
                 description: null,
                 public: true,
+                files: [],
             },
-            files: [],
             cmOptions: {
                 mode: 'text/javascript'
-            }
+            },
+            gistResource: new GistResource(),
+            gist: null,
         }
     },
 
     methods: {
         sendData() {
-            
+            this.gist = {
+                description: this.data.description,
+                public: this.data.public,
+                files: {}
+            }
+            this.data.files.forEach(file => this.gist.files[file.name] = {content: file.content});
+
+            this.gistResource.create(this.gist, response => console.log(response));
         },
 
         addFile() {
-            this.files.push({name: null, content: null});
+            this.data.files.push({name: null, content: null});
         },
 
         removeFile(index) {
-            this.files.splice(index, 1);
+            this.data.files.splice(index, 1);
         }
     }
 }

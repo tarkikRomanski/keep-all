@@ -18,4 +18,13 @@ export default class GistResource {
             .then(succes)
             .catch(error);
     }  
+
+    create(data, succes, error = null) {
+        window.axios.defaults.headers.common['Authorization'] = null;
+
+        let url = privateElements._getUrl('gists');
+        return axios.post(url, data)
+            .then(succes)
+            .catch(error);
+    }
 }
