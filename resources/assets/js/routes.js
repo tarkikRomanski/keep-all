@@ -6,6 +6,7 @@ import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
 import Registration from './components/Auth/Registration';
 import Home from './components/Home';
+import GistList from './components/Gist/GistList';
 //
 
 // routes
@@ -45,6 +46,11 @@ const router = new VueRouter({
             name: 'home',
             component: Home
         },
+        {
+            path: '/gists',
+            name: 'gists',
+            component: GistList
+        }
     ],
 
 
