@@ -6,10 +6,11 @@ import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
 import Registration from './components/Auth/Registration';
 import Home from './components/Home';
-import GistList from './components/Gist/GistList';
+import Gist from './components/Gist/Gist';
 //
 
 // routes
+import GistsRoutes from './routes/gists';
 //
 
 Vue.use(VueRouter);
@@ -49,7 +50,8 @@ const router = new VueRouter({
         {
             path: '/gists',
             name: 'gists',
-            component: GistList
+            component: Gist,
+            children: GistsRoutes
         }
     ],
 

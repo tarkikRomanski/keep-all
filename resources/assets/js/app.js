@@ -2,6 +2,34 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.mixin({
+    methods: {
+        humanFileSize(bytes) {
+            var step = 1000;
+            if(Math.abs(bytes) < step) {
+                return bytes + ' B';
+            }
+            var units = ['kB','MB','GB','TB','PB','EB','ZB','YB'];
+            var unit = -1;
+            do {
+                bytes /= step;
+                ++unit;
+            } while(Math.abs(bytes) >= step && unit < units.length - 1);
+            return `${bytes.toFixed(1)} ${units[unit]}`;
+        }
+    }
+});
+
+import CodeMirror from 'vue-codemirror';
+import 'codemirror/lib/codemirror.css'
+Vue.use(CodeMirror, {
+    options: {
+        theme: 'base16-dark',
+        lineNumbers: true,
+        line: true,
+    }
+});
+
 /**
  * Start include BootstrapVue
  */

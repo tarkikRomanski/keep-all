@@ -4,7 +4,7 @@ const privateElements = {
     _getUrl(action) {
         return `${this._gistUrl}${this._userName}/${action}?access_token=${this._personalToken}`;
     },
-    _personalToken: 'd1bbad93118cb2b1dd68a8d4236fe60edb98009b',
+    _personalToken: '8f55604f30fd48a5c31e8443805d32e44b231f47',
     _userName: 'tarkikRomanski',
     _gistUrl: 'https://api.github.com/users/'
 }

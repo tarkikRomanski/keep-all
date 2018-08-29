@@ -39,25 +39,10 @@ export default {
         }
     },
 
-    created() {
+    mounted() {
+        console.log('mounted');
         this.gistResource.list(response => this.gists = response.data);
     },
-
-    methods: {
-        humanFileSize(bytes) {
-            var step = 1000;
-            if(Math.abs(bytes) < step) {
-                return bytes + ' B';
-            }
-            var units = ['kB','MB','GB','TB','PB','EB','ZB','YB'];
-            var unit = -1;
-            do {
-                bytes /= step;
-                ++unit;
-            } while(Math.abs(bytes) >= step && unit < units.length - 1);
-            return `${bytes.toFixed(1)} ${units[unit]}`;
-        }
-    }
 }
 </script>
 

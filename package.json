@@ -23,6 +23,8 @@
     },
     "dependencies": {
         "bootstrap-vue": "^2.0.0-rc.11",
+        "font-awesome": "^4.7.0",
+        "vue-codemirror": "^4.0.5",
         "vue-router": "^3.0.1",
         "vue-sweetalert2": "^1.5.2"
     }
