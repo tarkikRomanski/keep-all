@@ -64,21 +64,14 @@ export default {
             cmOptions: {
                 mode: 'text/javascript'
             },
-            gistResource: new GistResource(),
-            gist: null,
+            gistResource: new GistResource()
         }
     },
 
     methods: {
         sendData() {
-            this.gist = {
-                description: this.data.description,
-                public: this.data.public,
-                files: {}
-            }
-            this.data.files.forEach(file => this.gist.files[file.name] = {content: file.content});
-
-            this.gistResource.create(this.gist, response => console.log(response));
+            let gist = this.prepareData();
+            this.gistResource.create(gist);
         },
 
         addFile() {
@@ -87,6 +80,16 @@ export default {
 
         removeFile(index) {
             this.data.files.splice(index, 1);
+        },
+
+        prepareData() {
+            let gist = {
+                description: this.data.description,
+                public: this.data.public,
+                files: {}
+            }
+            this.data.files.forEach(file => gist.files[file.name] = {content: file.content});
+            return JSON.stringify(gist);
         }
     }
 }
