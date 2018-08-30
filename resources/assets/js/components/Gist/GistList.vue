@@ -34,14 +34,18 @@ import GistResource from '../../resources/gistResource';
 export default {
     data() {
         return {
-            gistResource: new GistResource(),
-            gists: null
+            gistResource: new GistResource()
         }
     },
 
-    mounted() {
-        console.log('mounted');
-        this.gistResource.list(response => this.gists = response.data);
+    computed: {
+        gists() {
+                return this.$store.getters.getGists;
+        }
+    },
+
+    created() {
+        this.$store.dispatch('loadGists');
     },
 }
 </script>
