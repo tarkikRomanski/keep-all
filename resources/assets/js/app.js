@@ -20,6 +20,9 @@ Vue.mixin({
     }
 });
 
+/**
+ * Start include Code Mirror
+ */
 import CodeMirror from 'vue-codemirror';
 import 'codemirror/lib/codemirror.css'
 Vue.use(CodeMirror, {
@@ -29,6 +32,9 @@ Vue.use(CodeMirror, {
         line: true,
     }
 });
+/**
+ * End include Code Mirror
+ */
 
 /**
  * Start include BootstrapVue
@@ -52,16 +58,18 @@ import Auth from './packages/auth';
 Vue.use(Auth);
 
 /**
- * Start routers include
+ * Start include additional staff
  */
-import Router from './routes.js';
+import router from './routes.js';
+import store from './store.js';
 /**
- * End routers include
+ * End include additional staff
  */
 
 Vue.component('app', require('./components/App'));
 
 const app = new Vue({
     el: '#app',
-    router: Router
+    router,
+    store
 });
