@@ -12,6 +12,14 @@
                     <a target="_blank" :href="gist.owner.html_url">{{ gist.owner.login }}</a>
                     <img :src="gist.owner.avatar_url" alt="logo" class="userLogo">
                 </p>
+
+                <b-button-group>
+                    <b-button variant="info"><i class="fa fa-pencil"></i> Edit</b-button>
+                    <b-button @click="gistDelete(gist.id)" 
+                        variant="danger">
+                        <i class="fa fa-trash"></i> Delete
+                        </b-button>
+                </b-button-group>
             </div>
 
             <b-list-group>
@@ -47,6 +55,17 @@ export default {
     created() {
         this.$store.dispatch('loadGists');
     },
+
+    methods: {
+        gistDelete(id) {
+            this.gistResource.delete(id)
+                .then(result => this.removeGistFromStore(id));
+        },
+
+        removeGistFromStore(id) {
+            this.$store.dispatch('loadGists', id);
+        }
+    }
 }
 </script>
 

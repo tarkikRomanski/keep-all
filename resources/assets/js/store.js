@@ -22,12 +22,25 @@ const store = new Vuex.Store({
             data.gistResource.list(
                 response => context.commit('loadGists', response.data)
             );
+        },
+
+        removeGist(context, id) {
+            context.commit('removeGist', id)
         }
     },
 
     mutations: {
         loadGists(state, payload) {
             state.gists = payload;
+        },
+
+        removeGist(state, id) {
+            state.gists.forEach(gist => {
+                if (gist.id === id) {
+                    let index = state.gists.indexOf(gist);
+                    state.gists.splice(index, 1);
+                }
+            });
         }
     }
 });

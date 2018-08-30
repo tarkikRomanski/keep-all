@@ -34,9 +34,31 @@ export default class GistResource {
                 if (response.status == 201) {
                     swal(
                         'New gist has been created!',
-                        'You are create the new gist',
+                        'You are created the new gist',
                         'success'
                     );
+                }
+            })
+            .catch(error);
+    }
+
+    delete(id, succes = null, error = null) {
+        const queryOptions = {
+            headers: {
+              'Authorization': `token ${privateElements._personalToken}`
+            }
+        };
+
+        return axios.delete(`${privateElements._queryUrl}/${id}`, queryOptions)
+            .then(response => {
+                if (response.status == 204) {
+                    swal(
+                        'Gist has been deleted!',
+                        `You are deleted the gist (${id})`,
+                        'success'
+                    );
+
+                    return true;
                 }
             })
             .catch(error);
