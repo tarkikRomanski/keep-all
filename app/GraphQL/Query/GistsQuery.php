@@ -4,12 +4,29 @@ namespace App\GraphQL\Query;
 
 use App\GraphQL\Serializer\GistSerializer;
 use App\Models\Gist;
+use App\Repositories\GistRepository;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\Query;
 
 class GistsQuery extends Query
 {
+    /**
+     * @var GistRepository|null
+     */
+    private $gistRepository = null;
+
+    /**
+     * GistsQuery constructor.
+     * @param array $attributes
+     * @param GistRepository $gistRepository
+     */
+    public function __construct($attributes = [], GistRepository $gistRepository)
+    {
+        $this->gistRepository = $gistRepository;
+        parent::__construct($attributes);
+    }
+
     /**
      * @var array
      */
@@ -50,39 +67,26 @@ class GistsQuery extends Query
     /**
      * @param $root
      * @param $args
-     * @return Gist[]|\Illuminate\Database\Eloquent\Collection
+     * @return array
      */
     public function resolve($root, $args)
     {
-        $query = Gist::query();
+        $gistsList = $this->gistRepository->getGists();
 
-        $alias = [
-            'gist' => 'gist_id',
-            'folder' => 'folder_id',
-        ];
-        $args = $this->transformFields($args, $alias);
-
-        foreach ($args as $column => $value) {
-            $query = $query->where($column, $value);
-        }
-
-        return $query->get()->map(function (Gist $gist) {
+        return array_map(function ($gist) {
+            $localGist = Gist::where('gist_id', $gist->id)->first();
+            if ($localGist) {
+                $gist->local_id = $localGist->id;
+                $gist->local_user = $localGist->user_id;
+                $gist->folder = $localGist->folder()->getResults();
+            }
             return GistSerializer::getInstance()->serialize($gist);
-        });
-    }
+        }, $gistsList);
 
-    /**
-     * Transform fields names by alias
-     *
-     * @param array $args
-     * @param array $alias
-     * @return array
-     */
-    private function transformFields(array $args, array $alias = [])
-    {
-        return array_column(array_map(function ($key, $value) use ($alias) {
-            $key = isset($alias[$key]) ? $alias[$key] : $key;
-            return [$key, $value];
-        }, array_keys($args), $args), 1, 0);
+        // $alias = [
+        //     'gist' => 'gist_id',
+        //     'folder' => 'folder_id',
+        // ];
+        // $args = transformFields($args, $alias);
     }
 }

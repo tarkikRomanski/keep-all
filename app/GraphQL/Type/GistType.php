@@ -23,7 +23,7 @@ class GistType extends GraphQLType
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::id()),
+                'type' => Type::id(),
                 'description' => 'The id of the gist'
             ],
             'gist' => [
@@ -37,6 +37,10 @@ class GistType extends GraphQLType
             'folder' => [
                 'type' => GraphQL::type('Folder'),
                 'description' => 'The folder of the gist'
+            ],
+            'htmlUrl' => [
+                'type' => Type::string(),
+                'description' => 'The url of the gist'
             ]
         ];
     }

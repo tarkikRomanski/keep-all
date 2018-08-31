@@ -5,7 +5,7 @@ const privateElements = {
     _getGistsListUrl() {
         return `${this._gistsListUrl}${this._userName}/gists?access_token=${this._personalToken}`;
     },
-    _personalToken: '5fc4de785452f66293e57078b2b2701834968e47',
+    _personalToken: '390a6aa20139aa696ba9ff546b784e04eec10be2',
     _userName: 'tarkikRomanski',
     _gistsListUrl: 'https://api.github.com/users/',
     _queryUrl: 'https://api.github.com/gists'

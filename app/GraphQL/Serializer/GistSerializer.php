@@ -32,22 +32,27 @@ class GistSerializer
     }
 
     /**
-     * @param Gist $gist
+     * @param object $gist
      * @return array
      */
-    public function serialize(Gist $gist) : array
+    public function serialize(object $gist) : array
     {
         $returnData = [
-            'id' => $gist->id,
-            'gist' => $gist->gist_id,
-            'user' => $gist->user_id,
+            'gist' => $gist->id,
+            'htmlUrl' => $gist->html_url
         ];
 
-        $folder = $gist->folder()->getResults();
+        $returnData['id'] = isset($gist->local_id) 
+            ? $gist->local_id 
+            : null;
 
-        if($folder !== null) {
-            $returnData['folder'] = FolderSerializer::getInstance()->serialize($gist->folder()->getResults());
-        }
+        $returnData['user'] = isset($gist->local_user) 
+            ? $gist->local_user 
+            : null;
+
+        $returnData['folder'] = isset($gist->folder) 
+            ? FolderSerializer::getInstance()->serialize($gist->folder) 
+            : null;
 
         return $returnData;
     }
