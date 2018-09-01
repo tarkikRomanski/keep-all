@@ -21,7 +21,7 @@ class GistsQuery extends Query
      * @param array $attributes
      * @param GistRepository $gistRepository
      */
-    public function __construct($attributes = [], GistRepository $gistRepository)
+    public function __construct(GistRepository $gistRepository, $attributes = [])
     {
         $this->gistRepository = $gistRepository;
         parent::__construct($attributes);

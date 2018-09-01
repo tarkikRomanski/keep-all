@@ -2,15 +2,31 @@
 
 namespace App\GraphQL\Mutation\Gist;
 
-use App\GraphQL\Serializer\FolderSerializer;
 use App\GraphQL\Serializer\GistSerializer;
-use App\Models\Gist;
+use App\Repositories\GistRepository;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\Mutation;
 
 class CreateGistMutation extends Mutation
 {
+    /**
+     * @var GistRepository|null
+     */
+    private $gistRepository = null;
+
+    /**
+     * CreateGistMutation constructor.
+     * @param array $attributes
+     * @param GistRepository $gistRepository
+     */
+    public function __construct(GistRepository $gistRepository, $attributes = [])
+    {
+        $this->gistRepository = $gistRepository;
+
+        parent::__construct($attributes);
+    }
+
     /**
      * @var array
      */
@@ -30,11 +46,18 @@ class CreateGistMutation extends Mutation
     public function args()
     {
         return [
-            'gist' => [
+            'description' => [
                 'type' => Type::string(),
-                'description' => 'Id from gist.github',
-                'rules' => ['required', 'max:32', 'min:32', 'unique:gists,gist_id']
+                'description' => 'Description for a new gist',
+                'rules' => ['required', 'min:3']
             ],
+
+            'files' => [
+                'type' => Type::listOf(GraphQL::type('File')),
+                'description' => 'The files of a new gist',
+                'rules' => ['required']
+            ],
+
             'folder' => [
                 'type' => Type::id(),
                 'description' => 'Folder for the gist',
@@ -51,12 +74,19 @@ class CreateGistMutation extends Mutation
     public function resolve($root, $args)
     {
         $createData = [
-            'gist_id' => $args['gist'],
-            'folder_id' => isset($args['folder']) ? $args['folder'] : null,
-            'user_id' => 5,
+            'description' => $args['description'],
+            'public' => true,
+            'files' => [],
+            'folder' => isset($args['folder']) ? $args['folder'] : null
         ];
 
-        $gist = Gist::create($createData);
+        foreach ($args['files'] as $file) {
+            $createData['files'][$file['name']] = [
+                'content' => $file['content']
+            ];
+        }
+
+        $gist = $this->gistRepository->createGist($createData);
 
         return GistSerializer::getInstance()->serialize($gist);
     }

@@ -150,6 +150,7 @@ return [
     'types' => [
         'Folder' => 'App\GraphQL\Type\FolderType',
         'Gist' => 'App\GraphQL\Type\GistType',
+        'File' => 'App\GraphQL\Type\FileType',
     ],
 
     /*
