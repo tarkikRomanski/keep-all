@@ -3,12 +3,29 @@
 namespace App\GraphQL\Mutation\Gist;
 
 use App\Models\Gist;
+use App\Repositories\GistRepository;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\Mutation;
 
 class DeleteGistMutation extends Mutation
 {
+    /**
+     * @var GistRepository|null
+     */
+    private $gistRepository = null;
+
+    /**
+     * DeleteGistMutation constructor.
+     * @param GistRepository $gistRepository
+     * @param array $attributes
+     */
+    public function __construct(GistRepository $gistRepository, $attributes = [])
+    {
+        $this->gistRepository = $gistRepository;
+        parent::__construct($attributes);
+    }
+
     /**
      * @var array
      */
@@ -28,10 +45,10 @@ class DeleteGistMutation extends Mutation
     public function args()
     {
         return [
-            'id' => [
+            'gist' => [
                 'type' => Type::nonNull(Type::id()),
                 'description' => 'Id of the gist',
-                'rules' => ['required', 'exists:gists,id']
+                'rules' => ['required']
             ]
         ];
     }
@@ -43,8 +60,8 @@ class DeleteGistMutation extends Mutation
      */
     public function resolve($root, $args)
     {
-        Gist::find($args['id'])->delete();
+        $this->gistRepository->deleteGist($args['gist']);
 
-        return ['id' => $args['id']];
+        return ['gist' => $args['gist']];
     }
 }

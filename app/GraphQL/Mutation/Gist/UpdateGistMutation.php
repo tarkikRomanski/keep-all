@@ -4,12 +4,29 @@ namespace App\GraphQL\Mutation\Gist;
 
 use App\GraphQL\Serializer\GistSerializer;
 use App\Models\Gist;
+use App\Repositories\GistRepository;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\Mutation;
 
 class UpdateGistMutation extends Mutation
 {
+    /**
+     * @var GistRepository|null
+     */
+    private $gistRepository = null;
+
+    /**
+     * UpdateGistMutation constructor.
+     * @param GistRepository $gistRepository
+     * @param array $attributes
+     */
+    public function __construct(GistRepository $gistRepository, $attributes = [])
+    {
+        $this->gistRepository = $gistRepository;
+        parent::__construct($attributes);
+    }
+
     /**
      * @var array
      */
@@ -29,20 +46,24 @@ class UpdateGistMutation extends Mutation
     public function args()
     {
         return [
-            'id' => [
-                'type' => Type::id(),
-                'description' => 'Id of the gist',
-                'rules' => ['required', 'exists:gists,id']
-            ],
             'gist' => [
                 'type' => Type::string(),
-                'description' => 'Id from gist.github',
-                'rules' => ['max:32', 'min:32', 'unique:gists,gist_id']
+                'description' => 'The id of the gist',
+                'rules' => ['required']
+            ],
+            'description' => [
+                'type' => Type::string(),
+                'description' => 'The new description for the gist',
+                'rules' => ['min:3']
+            ],
+            'files' => [
+                'type' => Type::listOf(GraphQL::type('File')),
+                'description' => 'The new files of the gist'
             ],
             'folder' => [
                 'type' => Type::id(),
                 'description' => 'Folder for the gist',
-                'rules' => ['numeric', 'exists:folders,id', 'nullable']
+                'rules' => ['numeric', 'exists:folders,id']
             ],
         ];
     }
@@ -50,36 +71,47 @@ class UpdateGistMutation extends Mutation
     /**
      * @param $root
      * @param $args
-     * @return mixed
+     * @return array
      */
     public function resolve($root, $args)
     {
-        $gist = Gist::find($args['id']);
+        $updateData = $this->prepareData($args);
 
-        $alias = [
-            'gist' => 'gist_id',
-            'folder' => 'folder_id',
-        ];
-        $updateData = $this->transformFields($args, $alias);
+        $updatedGist = [];
 
-        $gist->update($updateData);
+        if (isset($args['folder'])) {
+            $updatedGist = $this->gistRepository->changeFolderForGist($args['gist'], $args['folder']);
+        }
 
-        return GistSerializer::getInstance()->serialize($gist);
+        if (!empty($updateData)) {
+            $updatedGist = $this->gistRepository->updateGist($args['gist'], $updateData);
+        }
+
+        return GistSerializer::getInstance()->serialize($updatedGist);
     }
 
     /**
-     * Transform fields names by alias
+     * Prepare data for update
      *
-     * @param array $args
-     * @param array $alias
+     * @param $args
      * @return array
      */
-    private function transformFields(array $args, array $alias = [])
+    private function prepareData($args)
     {
-        /* TODO create helper for this method or add method to a class */
-        return array_column(array_map(function ($key, $value) use ($alias) {
-            $key = isset($alias[$key]) ? $alias[$key] : $key;
-            return [$key, $value];
-        }, array_keys($args), $args), 1, 0);
+        $returnData = [];
+
+        if (isset($args['description'])) {
+            $returnData['description'] = $args['description'];
+        }
+
+        if (isset($args['files'])) {
+            foreach ($args['files'] as $file) {
+                $returnData['files'][$file['name']] = [
+                    'content' => $file['content']
+                ];
+            }
+        }
+
+        return $returnData;
     }
 }
