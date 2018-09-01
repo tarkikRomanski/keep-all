@@ -1,0 +1,10 @@
+{
+    folders(onlyRoot: true) {
+        id
+        name
+        description
+        color
+        childrenQuantity
+        gistsQuantity
+    }
+}

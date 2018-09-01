@@ -33,12 +33,16 @@ class FoldersQuery extends Query
     {
         return [
             'id' => [
-                'name' => 'id',
+                'description' => 'Id of the folder',
                 'type' => Type::id()
             ],
             'parent' => [
-                'name' => 'parent',
+                'description' => 'Parent of the folder',
                 'type' => Type::id()
+            ],
+            'onlyRoot' => [
+                'description' => 'Show only root folders',
+                'type' => Type::boolean()
             ]
         ];
     }
@@ -52,10 +56,18 @@ class FoldersQuery extends Query
     {
         $query = Folder::query();
 
-        foreach ($args as $column => $value) {
-            $column = $column == 'parent' ? 'parent_id': $column;
+        if (isset($args['parent'])) {
+            $query = $query->where('parent_id', $args['parent']);
+        }
 
-            $query = $query->where($column, $value);
+        if (isset($args['id'])) {
+            $query = $query->where('id', $args['id']);
+        }
+
+        if (isset($args['onlyRoot']) &&  $args['onlyRoot']) {
+            $parent = isset($args['parent']) ? $args['parent'] : null;
+
+            $query = $query->where('parent_id', $parent);
         }
 
         return $query->get()->map(function (Folder $folder) {

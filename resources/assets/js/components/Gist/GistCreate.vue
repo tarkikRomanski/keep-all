@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import GistResource from "../../resources/gistResource";
-
 export default {
     data(){
         return {
@@ -64,14 +62,12 @@ export default {
             cmOptions: {
                 mode: 'text/javascript'
             },
-            gistResource: new GistResource()
         }
     },
 
     methods: {
         sendData() {
             let gist = this.prepareData();
-            this.gistResource.create(gist);
         },
 
         addFile() {
@@ -87,7 +83,8 @@ export default {
                 description: this.data.description,
                 public: this.data.public,
                 files: {}
-            }
+            };
+
             this.data.files.forEach(file => gist.files[file.name] = {content: file.content});
             return JSON.stringify(gist);
         }

@@ -40,7 +40,12 @@ class GistSerializer
         $returnData = [
             'gist' => $gist->id,
             'description' => $gist->description,
-            'htmlUrl' => $gist->html_url
+            'htmlUrl' => $gist->html_url,
+            'files' => array_map(function($file){
+                return FileSerializer::getInstance()->serialize($file);
+            }, (array)$gist->files),
+            'createdAt' => $gist->created_at,
+            'owner' => GistUserSerializer::getInstance()->serialize($gist->owner)
         ];
 
         $returnData['id'] = isset($gist->local_id) 

@@ -57,7 +57,7 @@ class UpdateGistMutation extends Mutation
                 'rules' => ['min:3']
             ],
             'files' => [
-                'type' => Type::listOf(GraphQL::type('File')),
+                'type' => Type::listOf(GraphQL::type('FileInput')),
                 'description' => 'The new files of the gist'
             ],
             'folder' => [

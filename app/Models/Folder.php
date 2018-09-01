@@ -28,4 +28,14 @@ class Folder extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    /**
+     * Get children for the record
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany('App\Models\Folder', 'parent_id', 'id');
+    }
 }

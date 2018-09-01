@@ -53,7 +53,7 @@ class CreateGistMutation extends Mutation
             ],
 
             'files' => [
-                'type' => Type::listOf(GraphQL::type('File')),
+                'type' => Type::listOf(GraphQL::type('FileInput')),
                 'description' => 'The files of a new gist',
                 'rules' => ['required']
             ],

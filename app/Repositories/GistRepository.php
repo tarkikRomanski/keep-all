@@ -23,7 +23,7 @@ class GistRepository
     /**
      * @var string
      */
-    private $gistApiToken = '4a218923e76bb7f87bf97d5da09ef70c199d8022';
+    private $gistApiToken = '5ce90d11ed4799993458e96bb4de0f27e21501d2';
 
     /**
      * GistRepository constructor.

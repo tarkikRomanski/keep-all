@@ -1,11 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import GistResource from './resources/gistResource';
 
 Vue.use(Vuex);
 
 const data = {
-    gistResource: new GistResource(),
 };
 
 const store = new Vuex.Store({
@@ -19,9 +17,9 @@ const store = new Vuex.Store({
 
     actions: {
         loadGists(context) {
-            data.gistResource.list(
-                response => context.commit('loadGists', response.data)
-            );
+            // data.gistResource.list(
+            //     response => context.commit('loadGists', response.data)
+            // );
         },
 
         removeGist(context, id) {

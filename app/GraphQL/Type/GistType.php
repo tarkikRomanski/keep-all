@@ -45,6 +45,18 @@ class GistType extends GraphQLType
             'htmlUrl' => [
                 'type' => Type::string(),
                 'description' => 'The url of the gist'
+            ],
+            'files' => [
+                'type' => Type::listOf(GraphQL::type('File')),
+                'description' => 'Files of the gist'
+            ],
+            'createdAt' => [
+                'type' => Type::string(),
+                'description' => 'Date of the creation the gist'
+            ],
+            'owner' => [
+                'type' => GraphQL::type('GistUser'),
+                'description' => 'Owner of the gist'
             ]
         ];
     }

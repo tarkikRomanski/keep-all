@@ -151,6 +151,9 @@ return [
         'Folder' => 'App\GraphQL\Type\FolderType',
         'Gist' => 'App\GraphQL\Type\GistType',
         'File' => 'App\GraphQL\Type\FileType',
+        'GistUser' => 'App\GraphQL\Type\GistUserType',
+
+        'FileInput' => 'App\GraphQL\Input\FileInput',
     ],
 
     /*

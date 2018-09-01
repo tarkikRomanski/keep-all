@@ -17,23 +17,26 @@ class FileType extends GraphQLType
     ];
 
     /**
-     * @var bool
-     */
-    protected $inputObject = true;
-
-    /**
      * @return array
      */
     public function fields()
     {
         return [
+            'id' => [
+                'type' => Type::id(),
+                'description' => 'Id of the file'
+            ],
             'name' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Name of the file'
             ],
-            'content' => [
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'Content of the file'
+            'rawUrl' => [
+                'type' => Type::string(),
+                'description' => 'Url to content of the file'
+            ],
+            'size' => [
+                'type' => Type::string(),
+                'description' => 'Size of the file'
             ]
         ];
     }

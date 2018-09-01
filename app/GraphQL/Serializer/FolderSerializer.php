@@ -36,12 +36,19 @@ class FolderSerializer
      */
     public function serialize(Folder $folder) : array
     {
+        $children = $folder->children()->getResults();
+
         return [
             'id' => $folder->id,
             'name' => $folder->folder_name,
             'description' => $folder->folder_description,
             'color' => $folder->color,
-            'parent' => $folder->parent_id
+            'parent' => $folder->parent_id,
+            'children' => $children->map(function ($child) {
+                return $this->serialize($child);
+            }),
+            'childrenQuantity' => $children->count(),
+            'gistsQuantity' => $folder->gists()->count()
         ];
     }
 }

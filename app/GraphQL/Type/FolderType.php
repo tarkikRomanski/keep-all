@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Type;
 
+use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 
@@ -41,6 +42,18 @@ class FolderType extends GraphQLType
                 'type' => Type::id(),
                 'description' => 'Parent for the folder'
             ],
+            'children' => [
+                'type' => Type::listOf(GraphQL::type('Folder')),
+                'description' => 'Children for the folder'
+            ],
+            'childrenQuantity' => [
+                'type' => Type::int(),
+                'description' => 'Quantity of the child elements'
+            ],
+            'gistsQuantity' => [
+                'type' => Type::int(),
+                'description' => 'Quantity of the gists into folder'
+            ]
         ];
     }
 }

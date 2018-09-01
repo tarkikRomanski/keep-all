@@ -1,0 +1,19 @@
+{
+    gists {
+        gist
+        description
+        createdAt
+        htmlUrl
+        owner {
+            login
+            avatar
+            url
+        }
+        files {
+            id
+            name
+            rawUrl
+            size
+        }
+    }
+}
