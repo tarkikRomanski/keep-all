@@ -39,6 +39,7 @@ class GistSerializer
     {
         $returnData = [
             'gist' => $gist->id,
+            'description' => $gist->description,
             'htmlUrl' => $gist->html_url
         ];
 

@@ -30,6 +30,10 @@ class GistType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'The id on gist.github'
             ],
+            'description' => [
+                'type' => Type::string(),
+                'description' => 'Description of the gist'
+            ],
             'user' => [
                 'type' => Type::id(),
                 'description' => 'Owner id'

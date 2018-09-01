@@ -60,8 +60,9 @@ Vue.use(Auth);
 /**
  * Start include additional staff
  */
-import router from './routes.js';
-import store from './store.js';
+import router from './routes';
+import store from './store';
+import apolloProvider from './apollo';
 /**
  * End include additional staff
  */
@@ -70,6 +71,7 @@ Vue.component('app', require('./components/App'));
 
 const app = new Vue({
     el: '#app',
+    provide: apolloProvider.provide(),
     router,
     store
 });
