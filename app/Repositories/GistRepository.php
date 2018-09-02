@@ -23,7 +23,7 @@ class GistRepository
     /**
      * @var string
      */
-    private $gistApiToken = '5ce90d11ed4799993458e96bb4de0f27e21501d2';
+    private $gistApiToken = 'f7207db7b8bff16cb7ccb682bd5a136700b5b7ae';
 
     /**
      * GistRepository constructor.
@@ -47,7 +47,9 @@ class GistRepository
         $gistsResponse = $this->client->get($url);
         $gistsList = json_decode($gistsResponse->getBody());
 
-        return $gistsList;
+        return array_map(function($gist){
+            return $this->margeGistWithLocalData($gist);
+        }, $gistsList);
     }
 
     /**

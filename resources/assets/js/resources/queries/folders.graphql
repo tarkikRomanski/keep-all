@@ -1,5 +1,5 @@
-{
-    folders(onlyRoot: true) {
+query GetFolders($folder: ID, $onlyRoot: Boolean) {
+    folders(onlyRoot: $onlyRoot, parent: $folder) {
         id
         name
         description

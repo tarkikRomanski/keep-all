@@ -61,8 +61,8 @@ Vue.use(Auth);
  * Start include additional staff
  */
 import router from './routes';
-import store from './store';
 import apolloProvider from './apollo';
+import store from './store';
 /**
  * End include additional staff
  */

@@ -1,14 +1,8 @@
-{
-    gists {
+query GetGists($folder: ID) {
+    gists (withoutFolder: true, folder: $folder) {
         gist
         description
-        createdAt
         htmlUrl
-        owner {
-            login
-            avatar
-            url
-        }
         files {
             id
             name

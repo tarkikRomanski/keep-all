@@ -49,17 +49,14 @@ class GistsQuery extends Query
     public function args()
     {
         return [
-            'id' => [
-                'name' => 'id',
-                'type' => Type::id()
-            ],
-            'gist' => [
-                'name' => 'gist',
-                'type' => Type::string()
-            ],
             'folder' => [
-                'name' => 'folder',
-                'type' => Type::id()
+                'type' => Type::id(),
+                'description' => 'Folder for the gist',
+                'rules' => ['numeric', 'exists:folders,id']
+            ],
+            'withoutFolder' => [
+                'type' => Type::boolean(),
+                'description' => 'Show gists without folder',
             ]
         ];
     }
@@ -73,20 +70,18 @@ class GistsQuery extends Query
     {
         $gistsList = $this->gistRepository->getGists();
 
-        return array_map(function ($gist) {
-            $localGist = Gist::where('gist_id', $gist->id)->first();
-            if ($localGist) {
-                $gist->local_id = $localGist->id;
-                $gist->local_user = $localGist->user_id;
-                $gist->folder = $localGist->folder()->getResults();
-            }
-            return GistSerializer::getInstance()->serialize($gist);
-        }, $gistsList);
+        if (isset($args['withoutFolder']) && $args['withoutFolder'] == true && !isset($args['folder'])) {
+            $gistsList = array_filter($gistsList, function($gist) {
+                return is_null($gist->folder);
+            });
+        }
 
-        // $alias = [
-        //     'gist' => 'gist_id',
-        //     'folder' => 'folder_id',
-        // ];
-        // $args = transformFields($args, $alias);
+        if (isset($args['folder'])) {
+            $gistsList = array_filter($gistsList, function($gist) use ($args) {
+                return $gist->folder !== null && $gist->folder->id == $args['folder'];
+            });
+        }
+
+        return GistSerializer::getInstance()->collection($gistsList);
     }
 }

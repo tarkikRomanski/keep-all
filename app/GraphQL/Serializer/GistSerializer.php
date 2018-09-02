@@ -32,6 +32,8 @@ class GistSerializer
     }
 
     /**
+     * Return the serialized data
+     *
      * @param object $gist
      * @return array
      */
@@ -61,5 +63,18 @@ class GistSerializer
             : null;
 
         return $returnData;
+    }
+
+    /**
+     * Return collection of the serialized data
+     *
+     * @param array $gists
+     * @return array
+     */
+    public function collection(array $gists) : array
+    {
+        return array_map(function($gist) {
+            return $this->serialize($gist);
+        }, $gists);
     }
 }

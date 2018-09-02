@@ -14,6 +14,11 @@ mix.webpackConfig({
             },
         ],
     },
+    resolve: {
+        alias: {
+            '@styles': path.resolve('resources/assets/sass')
+        }
+    }
 });
 
 mix.sourceMaps()

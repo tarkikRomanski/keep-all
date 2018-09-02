@@ -24,7 +24,7 @@ class GistType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::id(),
-                'description' => 'The id of the gist'
+                'description' => 'The local id of the gist'
             ],
             'gist' => [
                 'type' => Type::nonNull(Type::string()),

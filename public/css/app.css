@@ -13526,6 +13526,10 @@ a.text-dark:focus {
   }
 }
 
+html {
+  font-size: 16px;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
